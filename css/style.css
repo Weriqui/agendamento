@@ -1,0 +1,521 @@
+/* Estilo principal do corpo da página */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #4ab1f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+#multi-step-form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+h3{
+    text-align: center;
+    font-size: xx-large;
+    font-weight: 400;
+}
+/* Container principal do formulário */
+.form-container {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    max-width: 850px;
+    width: 100%;
+    position: relative;
+    margin: auto;
+    overflow: hidden;
+}
+
+/* Estilo de cada etapa do formulário */
+.form-step {
+    display: none;
+    opacity: 0;
+    transition: all 0.5s ease-in-out;
+    position: absolute;
+    width: 100%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.form-step.active {
+    display: block;
+    opacity: 1;
+    transform: translateX(0);
+    position: relative;
+}
+
+/* Estilo dos inputs de texto e selects */
+.form-step input[type="text"],
+.form-step select {
+    width: calc(100% - 20px);
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+}
+
+/* Estilo dos inputs de radio */
+.form-step input[type="radio"] {
+    margin-right: 10px;
+}
+
+.form-step label {
+    display: block;
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+/* Estilo dos botões de navegação do formulário */
+.form-navigation {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+    width: 100%;
+}
+
+.form-navigation button {
+    background-color: #0288d1;
+    color: #ffffff;
+    border: none;
+    padding: 15px 25px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.form-navigation button:hover {
+    background-color: #0277bd;
+}
+
+.form-navigation button:disabled {
+    background-color: #b0bec5;
+    cursor: not-allowed;
+}
+
+/* Estilo dos indicadores de progresso */
+.form-progress {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.form-progress div {
+    width: 12px;
+    height: 12px;
+    margin: 0 8px;
+    background-color: #ddd;
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+}
+
+.form-progress .active {
+    background-color: #0288d1;
+}
+
+/* Estilo da mensagem de erro */
+.error-message {
+    color: #e74c3c;
+    font-size: 14px;
+    margin-top: 5px;
+    display: none;
+}
+
+.error {
+    border: 1px solid #e74c3c;
+}
+
+/* Estilo para transformar as opções em cards */
+.option-card {
+    display: block;
+    width: calc(100% - 20px);
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    margin: 10px auto;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+}
+
+.option-card input[type="radio"] {
+    display: none;
+}
+
+.option-card:hover {
+    background-color: #e0f7ff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.option-card.selected {
+    background-color: #b3e5fc;
+    border-color: #0288d1;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.option-card .checkmark {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 18px;
+    color: #0288d1;
+    display: none;
+}
+
+.option-card.selected .checkmark {
+    display: block;
+}
+
+/* Estilo para a transição entre etapas */
+.form-step.exiting-left {
+    transform: translateX(-100%);
+}
+
+.form-step.entering-right {
+    transform: translateX(100%);
+    opacity: 1;
+}
+
+/* Estilo para sugestões de negócios */
+.suggestions-container {
+    position: absolute;
+    background: #ffffff;
+    border: 1px solid #ddd;
+    width: calc(100% - 40px);
+    max-height: 150px;
+    overflow-y: auto;
+    z-index: 10;
+}
+
+.suggestion-item {
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.suggestion-item:hover {
+    background-color: #f0f0f0;
+}
+
+.suggestion-item .title {
+    font-weight: bold;
+}
+
+.suggestion-item .details {
+    font-size: 0.9em;
+    color: #666;
+}
+
+.suggestion-item.lost {
+    background-color: #ffebee;
+    border-left: 4px solid #d32f2f;
+}
+
+/* Estilo do contêiner do calendário e slots de horário */
+.container {
+    display: flex;
+    gap: 20px;
+    flex-wrap: nowrap; /* Garantir que os elementos estejam lado a lado */
+    align-items: flex-start;
+    margin-top: 20px;
+}
+
+/* Calendário */
+.calendar-container {
+    flex: 1 1 300px;
+    min-width: 280px;
+}
+
+/* Horários Disponíveis */
+.time-slots-container {
+    flex: 1 1 300px;
+    min-width: 280px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 400px;
+    overflow-y: auto;
+    padding-left: 20px; /* Adiciona um espaço entre os horários e o calendário */
+    box-sizing: border-box;
+}
+
+/* Ajuste para evitar que elementos se empilhem em telas pequenas */
+@media (max-width: 600px) {
+    .container {
+        flex-direction: column;
+    }
+}
+
+/* Estilo dos horários */
+.loading {
+    text-align: center;
+    font-size: 1.5rem;
+    color: #3f51b5;
+}
+
+.time-slot {
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+    background-color: #f9f9f9;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+.time-slot.available:hover {
+    background-color: #3f51b5;
+    color: white;
+    box-shadow: 0 4px 8px rgba(63, 81, 181, 0.3);
+    transform: scale(1.05);
+}
+
+.time-slot.available:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 4px rgba(63, 81, 181, 0.2);
+}
+
+/* Seleção do horário */
+/* Botão de cancelar seleção */
+.cancel-selection {
+    background-color: transparent;  /* Deixe transparente para parecer "link" */
+    border: 1px solid #ffffff;      /* Coloque uma borda para delimitar o botão */
+    color: #ffffff;                 /* A cor deve ser branca para contrastar com o fundo */
+    cursor: pointer;
+    font-weight: bold;
+    padding: 8px 15px;              /* Um pouco de preenchimento para melhorar o clique */
+    margin-left: 15px;
+    border-radius: 5px;             /* Cantos arredondados para consistência */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Transição suave para efeitos */
+}
+
+.cancel-selection:hover {
+    background-color: #ff4757;  /* Cor diferente para o hover */
+    color: #ffffff;             /* Contraste para legibilidade */
+    text-decoration: none;      /* Remove o underline do link */
+}
+
+.cancel-selection:active {
+    background-color: #e84141;  /* Cor para o estado ativo */
+    transform: scale(0.95);     /* Um pequeno efeito para simular o clique */
+}
+
+/* Seção do horário selecionado */
+#selected-slot {
+    background-color: #3f51b5;
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    display: none;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(63, 81, 181, 0.2);
+    margin-top: 20px;
+    width: 100%;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+#selected-slot.visible {
+    display: flex;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+#selected-slot.visible {
+    display: flex;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Contêiner dos horários (mantém o estilo e evita overflow) */
+.time-slots-container {
+    flex: 1 1 300px;
+    min-width: 280px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 400px;
+    overflow-y: auto;
+    overflow-x: hidden; /* Impede o scroll lateral */
+    padding-right: 10px;
+}
+
+/* Estilo dos slots de horário */
+.time-slot {
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+    background-color: #f9f9f9;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Removi o transform para evitar empurrão */
+}
+
+/* Efeito ao passar o mouse (sem aumentar o tamanho do elemento) */
+.time-slot.available:hover {
+    background-color: #3f51b5;
+    color: white;
+    box-shadow: 0 4px 8px rgba(63, 81, 181, 0.3);
+}
+
+/* Estilo para o conteúdo de revisão */
+/* Estilo para o conteúdo de revisão */
+.review-container {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    max-width: 100%;
+}
+
+/* Estilo para cada item de revisão */
+.review-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid #0288d1;
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.review-item:nth-child(even) {
+    background-color: #f3f8ff; /* Cores alternadas para linhas */
+}
+
+.review-item .label {
+    font-weight: bold;
+    color: #0288d1;
+    display: flex;
+    align-items: center;
+}
+
+.review-item .value {
+    font-size: 15px;
+    color: #555;
+}
+
+.review-item i {
+    color: #0288d1;
+    margin-right: 10px;
+}
+
+/* Melhoria visual do container de revisão */
+.review-header {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #333;
+    border-bottom: 2px solid #0288d1;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.review-header i {
+    color: #0288d1;
+    font-size: 1.8em;
+}
+
+/* Estilo para revisão dos dados */
+.review-container {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    max-width: 100%;
+}
+.review-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid #0288d1;
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 10px;
+    transition: background-color 0.3s ease;
+}
+.review-item:nth-child(even) {
+    background-color: #f3f8ff;
+}
+.review-item .label {
+    font-weight: bold;
+    color: #0288d1;
+    display: flex;
+    align-items: center;
+}
+.review-item .value {
+    font-size: 15px;
+    color: #555;
+}
+.review-item i {
+    color: #0288d1;
+    margin-right: 10px;
+}
+.review-header {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #333;
+    border-bottom: 2px solid #0288d1;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.review-header i {
+    color: #0288d1;
+    font-size: 1.8em;
+}
+.review-action-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 20px;
+}
+.review-action-buttons button {
+    background-color: #0288d1;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 16px;
+}
+.review-action-buttons button:hover {
+    background-color: #0277bd;
+}
+.review-action-buttons button:disabled {
+    background-color: #b0bec5;
+    cursor: not-allowed;
+}
+
+#objecao-outros {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+}
