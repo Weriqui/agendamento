@@ -1,0 +1,194 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-step Form</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="js/script.js" defer></script>
+</head>
+<body>
+    <div class="form-container">
+        <div class="form-progress" id="form-progress">
+            <!-- Indicadores de progresso serão gerados aqui -->
+        </div>
+        <form id="multi-step-form">
+            <div class="form-step">
+                <h3>Selecione a Data e Horário da Reunião</h3>
+                <div class="container">
+                    <div class="calendar-container">
+                        <div id="calendar"></div>
+                    </div>
+                    <div class="time-slots-container" id="time-slots">
+                        <div id="loading" class="loading"><i class="fas fa-spinner fa-spin"></i> Carregando horários disponíveis...</div>
+                    </div>
+                </div>
+                <div id="selected-slot" class="selected-slot">
+                    <div class="slot-details">
+                        <span id="selected-info"><i class="fas fa-calendar-check"></i> Horário Selecionado:</span>
+                        <span id="selected-time"></span>
+                    </div>
+                    <button id="cancel-selection" class="cancel-selection">Cancelar Seleção</button>
+                </div>
+                <div class="error-message">Este campo é obrigatório.</div>
+            </div>
+            <!-- Primeira etapa do formulário -->
+            <div class="form-step active">
+                <h3>Nome do Negócio</h3>
+                <input type="text" name="nome-negocio" placeholder="Nome do Negócio" required>
+                <div class="suggestions-container"></div>
+                <div class="error-message">Este campo é obrigatório.</div>
+            </div>
+            <!-- Segunda etapa do formulário -->
+            <div class="form-step">
+                <h3>Tem Dívida ou Parcelamento Estadual?</h3>
+                <label class="option-card"><input type="radio" name="divida" value="sim" required> Sim <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
+                <label class="option-card"><input type="radio" name="divida" value="nao" required> Não <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
+                <label class="option-card"><input type="radio" name="divida" value="nao-sei" required> Não sei <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
+                <div class="error-message">Este campo é obrigatório.</div>
+            </div>
+            <!-- Terceira etapa do formulário -->
+            <div class="form-step">
+                <h3>Tem Assessoria Jurídica Tributária?</h3>
+                <label class="option-card"><input type="radio" name="assessoria-juridica" value="sim" required> Sim <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
+                <label class="option-card"><input type="radio" name="assessoria-juridica" value="nao" required> Não <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
+                <label class="option-card"><input type="radio" name="assessoria-juridica" value="nao-sei" required> Não sei <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
+                <div class="error-message">Este campo é obrigatório.</div>
+            </div>
+            <!-- Quarta etapa do formulário -->
+            <div class="form-step">
+                <h3>Conhece a Villela?</h3>
+                <label class="option-card"><input type="radio" name="conhece-villela" value="sim" required> Sim <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
+                <label class="option-card"><input type="radio" name="conhece-villela" value="nao" required> Não <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
+                <div class="error-message">Este campo é obrigatório.</div>
+            </div>
+            <!-- Quinta etapa do formulário -->
+            <div class="form-step">
+                <h3>Tentou Obter o Benefício?</h3>
+                <label class="option-card"><input type="radio" name="tentou-beneficio" value="sim" required> Sim <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
+                <label class="option-card"><input type="radio" name="tentou-beneficio" value="nao" required> Não <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
+                <label class="option-card"><input type="radio" name="tentou-beneficio" value="nao-sei" required> Não sei <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
+                <div class="error-message">Este campo é obrigatório.</div>
+            </div>
+            <!-- Sexta etapa do formulário -->
+            <div class="form-step">
+                <h3>Já Conhecia o Benefício?</h3>
+                <label class="option-card"><input type="radio" name="conhecia-beneficio" value="sim" required> Sim <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
+                <label class="option-card"><input type="radio" name="conhecia-beneficio" value="nao" required> Não <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
+                <label class="option-card"><input type="radio" name="conhecia-beneficio" value="nao-sei" required> Não sei <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
+                <div class="error-message">Este campo é obrigatório.</div>
+            </div>
+            <!-- Sétima etapa do formulário -->
+            <div class="form-step">
+                <h3>Por Onde Foi Agendado?</h3>
+                <label class="option-card"><input type="radio" name="agendamento" value="ligacao" required> Ligação <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
+                <label class="option-card"><input type="radio" name="agendamento" value="whatsapp" required> WhatsApp <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
+                <div class="error-message">Este campo é obrigatório.</div>
+            </div>
+            <!-- Oitava etapa do formulário -->
+            <div class="form-step">
+                <h3>Quem Fará a Reunião?</h3>
+                <label class="option-card"><input type="radio" name="quem-reuniao" value="decisor" required> Decisor <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
+                <label class="option-card"><input type="radio" name="quem-reuniao" value="influenciador" required> Influenciador <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
+                <label class="option-card"><input type="radio" name="quem-reuniao" value="assessoria-externa" required> Assessoria Externa <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
+                <div class="error-message">Este campo é obrigatório.</div>
+            </div>
+            <!-- Oitava etapa do formulário -->
+            <div class="form-step">
+                <h3>Quem Fará a Reunião?</h3>
+                <label class="option-card"><input type="text" name="nome-quem-reuniao" required placeholder="nome"></label>
+                <label class="option-card"><input type="text" name="nome-quem-reuniao"required placeholder="telefone"></label>
+                <div class="error-message">Este campo é obrigatório.</div>
+            </div>
+            <!-- Nona etapa do formulário -->
+            <div class="form-step">
+                <h3>Função</h3>
+                <label class="option-card"><input type="radio" name="funcao" value="decisor" required> Decisor <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
+                <label class="option-card"><input type="radio" name="funcao" value="socio" required> Sócio <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
+                <label class="option-card"><input type="radio" name="funcao" value="adv-interno" required> Advogado Interno <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
+                <label class="option-card"><input type="radio" name="funcao" value="adv-externo" required> Advogado Externo <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
+                <label class="option-card"><input type="radio" name="funcao" value="cfo" required> CFO/Responsável Financeiro <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
+                <label class="option-card"><input type="radio" name="funcao" value="contador-interno" required> Contador Interno <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
+                <label class="option-card"><input type="radio" name="funcao" value="contador-externo" required> Contador Externo <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
+                <div class="error-message">Este campo é obrigatório.</div>
+            </div>
+            <!-- Décima etapa do formulário -->
+            <div class="form-step">
+                <h3>Consegue Pagar Tributo do Mês?</h3>
+                <label class="option-card"><input type="radio" name="pagar-tributo" value="sim" required> Sim <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
+                <label class="option-card"><input type="radio" name="pagar-tributo" value="nao" required> Não <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
+                <label class="option-card"><input type="radio" name="pagar-tributo" value="as-vezes" required> Às Vezes <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
+                <label class="option-card"><input type="radio" name="pagar-tributo" value="nao-sei" required> Não Sei <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
+                <div class="error-message">Este campo é obrigatório.</div>
+            </div>
+            <!-- Décima primeira etapa do formulário -->
+            <div class="form-step">
+                <h3>Paga Parcelamento em Dia?</h3>
+                <label class="option-card"><input type="radio" name="paga-parcelamento" value="sim" required> Sim <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
+                <label class="option-card"><input type="radio" name="paga-parcelamento" value="nao" required> Não <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
+                <label class="option-card"><input type="radio" name="paga-parcelamento" value="nao-aplica" required> Não se Aplica <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
+                <label class="option-card"><input type="radio" name="paga-parcelamento" value="nao-informado" required> Não Informado <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
+                <div class="error-message">Este campo é obrigatório.</div>
+            </div>
+            <!-- Décima segunda etapa do formulário -->
+            <div class="form-step">
+                <h3>Contabilidade</h3>
+                <label class="option-card"><input type="radio" name="contabilidade" value="interna" required> Interna <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
+                <label class="option-card"><input type="radio" name="contabilidade" value="externa" required> Externa <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
+                <label class="option-card"><input type="radio" name="contabilidade" value="nao-tem" required> Não Tem <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
+                <label class="option-card"><input type="radio" name="contabilidade" value="nao-sei" required> Não Sei <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
+                <div class="error-message">Este campo é obrigatório.</div>
+            </div>
+            <!-- Décima terceira etapa do formulário -->
+            <div class="form-step">
+                <h3>Grau de Urgência em Resolver</h3>
+                <label class="option-card"><input type="radio" name="grau-urgencia" value="baixo" required> Baixo <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
+                <label class="option-card"><input type="radio" name="grau-urgencia" value="medio" required> Médio <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
+                <label class="option-card"><input type="radio" name="grau-urgencia" value="alto" required> Alto <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
+                <label class="option-card"><input type="radio" name="grau-urgencia" value="nao-informado" required> Não Informado <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
+                <div class="error-message">Este campo é obrigatório.</div>
+            </div>
+            <!-- Décima quarta etapa do formulário -->
+            <div class="form-step">
+                <h3>Já Teve Reunião?</h3>
+                <label class="option-card"><input type="radio" name="teve-reuniao" value="sim" required> Sim <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
+                <label class="option-card"><input type="radio" name="teve-reuniao" value="nao" required> Não <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
+                <label class="option-card"><input type="radio" name="teve-reuniao" value="nao-sei" required> Não Sei <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
+                <div class="error-message">Este campo é obrigatório.</div>
+            </div>
+            <!-- Décima quinta etapa do formulário: Objeção Apresentada -->
+            <div class="form-step">
+                <h3>Objeção Apresentada</h3>
+                <label class="option-card"><input type="radio" name="objecao" value="ja-tem-assessoria" required> Já tem Assessoria Jurídica <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
+                <label class="option-card"><input type="radio" name="objecao" value="honorarios" required> Honorários <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
+                <label class="option-card"><input type="radio" name="objecao" value="contador" required> Contador <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
+                <label class="option-card"><input type="radio" name="objecao" value="falta-de-tempo" required> Falta de Tempo <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
+                <label class="option-card"><input type="radio" name="objecao" value="desconfianca" required> Desconfiança <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
+                <label class="option-card"><input type="radio" name="objecao" value="sem-condicoes-financeiras" required> Sem Condições Financeiras <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
+                <label class="option-card"><input type="radio" name="objecao" value="outros" required> Outros <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
+                <input type="text" name="objecao-outros" id="objecao-outros" placeholder="Digite sua objeção aqui" style="display:none; margin-top: 10px;">
+                <div class="error-message">Este campo é obrigatório.</div>
+            </div>
+
+            <!-- Última etapa do formulário: Revisão -->
+            <div class="form-step">
+                <h3>Revisão dos Dados</h3>
+                <div id="review-content">
+                    <!-- O conteúdo da revisão será gerado aqui -->
+                </div>
+                <div class="error-message">Por favor, revise e confirme os dados.</div>
+            </div>
+            
+            <!-- Adicionar mais etapas conforme necessário -->
+            <div class="form-navigation">
+                <button type="button" id="prevBtn" disabled>Anterior</button>
+                <button type="button" id="nextBtn">Próximo</button>
+            </div>
+        </form>
+    </div>
+</body>
+
+

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda de Reuniões</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.css">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+            max-width: 850px;
+            padding: 20px;
+        }
+
+        .title-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #333333;
+        }
+
+        .title-container i {
+            color: #3f51b5;
+            font-size: 1.8em;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            position: relative;
+        }
+
+        .calendar-container {
+            flex: 1 1 300px;
+            min-width: 280px;
+        }
+
+        .time-slots-container {
+            flex: 1 1 300px;
+            min-width: 280px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .loading {
+            text-align: center;
+            font-size: 1.5rem;
+            color: #3f51b5;
+        }
+
+        .time-slot {
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: center;
+            cursor: pointer;
+            background-color: #f9f9f9;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+        }
+
+        .time-slot.available:hover {
+            background-color: #3f51b5;
+            color: white;
+            box-shadow: 0 4px 8px rgba(63, 81, 181, 0.3);
+            transform: scale(1.05);
+        }
+
+        .time-slot.available:active {
+            transform: scale(0.95);
+            box-shadow: 0 2px 4px rgba(63, 81, 181, 0.2);
+        }
+
+        #selected-slot {
+            background-color: #3f51b5;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 8px rgba(63, 81, 181, 0.2);
+            margin-top: 20px;
+            width: 100%;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        #selected-slot.visible {
+            display: flex;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .cancel-selection {
+            background-color: transparent;
+            border: none;
+            color: #ffffff;
+            cursor: pointer;
+            font-weight: bold;
+            margin-left: 15px;
+            transition: color 0.3s ease;
+        }
+
+        .cancel-selection:hover {
+            text-decoration: underline;
+            color: #ffdddd;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <!-- Título da Agenda -->
+        <div class="title-container">
+            <i class="fas fa-calendar-alt"></i>
+            <span>Agenda Villela Prime</span>
+        </div>
+
+        <!-- Contêiner Principal -->
+        <div class="container">
+            <!-- Calendário Fixo -->
+            <div class="calendar-container">
+                <div id="calendar"></div>
+            </div>
+
+            <!-- Horários Dinâmicos -->
+            <div class="time-slots-container" id="time-slots">
+                <div id="loading" class="loading"><i class="fas fa-spinner fa-spin"></i> Carregando horários disponíveis...</div>
+            </div>
+
+            <!-- Card de Seleção de Horário -->
+            <div id="selected-slot" class="selected-slot">
+                <div class="slot-details">
+                    <span id="selected-info"><i class="fas fa-calendar-check"></i> Horário Selecionado:</span>
+                    <span id="selected-time"></span>
+                </div>
+                <button id="cancel-selection" class="cancel-selection">Cancelar Seleção</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            const timeSlotsContainer = document.getElementById("time-slots");
+            const selectedSlotContainer = document.getElementById("selected-slot");
+            const selectedTimeElement = document.getElementById("selected-time");
+            const cancelSelectionButton = document.getElementById("cancel-selection");
+            const loadingElement = document.getElementById("loading");
+
+            let horariosDisponiveis = {};
+
+            try {
+                // Fazer a solicitação assíncrona para obter os horários disponíveis
+                const response = await fetch("https://automation-pipe-af55514da494.herokuapp.com/horarios-disponiveis");
+                horariosDisponiveis = await response.json();
+
+                // Esconder o elemento de carregamento
+                loadingElement.style.display = "none";
+
+                // Inicializar o calendário
+                flatpickr("#calendar", {
+                    inline: true, // Mostra o calendário sempre visível
+                    dateFormat: "Y-m-d",
+                    onChange: function (selectedDates, dateStr) {
+                        atualizarHorarios(dateStr);
+                    }
+                });
+
+            } catch (error) {
+                console.error("Erro ao obter horários disponíveis:", error);
+                loadingElement.innerText = "Erro ao carregar os horários disponíveis. Por favor, tente novamente mais tarde.";
+            }
+
+            // Função para atualizar os horários para a data selecionada
+            function atualizarHorarios(diaSelecionado) {
+                // Limpar os horários atuais
+                timeSlotsContainer.innerHTML = "";
+
+                // Exibir mensagem de carregamento
+                const loadingMessage = document.createElement("div");
+                loadingMessage.classList.add("loading");
+                loadingMessage.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Procurando horários disponíveis...";
+                timeSlotsContainer.appendChild(loadingMessage);
+
+                setTimeout(() => {
+                    // Limpar mensagem de carregamento após simular uma busca
+                    timeSlotsContainer.innerHTML = "";
+
+                    // Filtrar os horários para o dia selecionado
+                    if (horariosDisponiveis[diaSelecionado]) {
+                        // Renderizar os horários disponíveis
+                        Object.keys(horariosDisponiveis[diaSelecionado]).forEach(hora => {
+                            const slotDiv = document.createElement("div");
+                            slotDiv.classList.add("time-slot", "available");
+
+                            // Exibir o horário
+                            slotDiv.textContent = hora;
+
+                            // Adicionar evento de clique para selecionar o horário
+                            slotDiv.addEventListener("click", () => selecionarHorario(diaSelecionado, hora));
+
+                            // Adicionar o horário à interface
+                            timeSlotsContainer.appendChild(slotDiv);
+                        });
+                    } else {
+                        // Caso não tenha horários disponíveis
+                        const noSlotsDiv = document.createElement("div");
+                        noSlotsDiv.textContent = "Nenhum horário disponível para esta data.";
+                        timeSlotsContainer.appendChild(noSlotsDiv);
+                    }
+                }, 500); // Simular tempo de carregamento para exibir a mensagem de carregando
+            }
+
+            // Função para selecionar um horário
+            function selecionarHorario(dia, hora) {
+                const data = new Date(dia);
+                const diaFormatado = data.toLocaleDateString('pt-BR', {
+                    weekday: 'long',
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                });
+
+                // Atualizar o elemento de horário selecionado
+                selectedTimeElement.textContent = `${hora} - ${diaFormatado}`;
+
+                // Mostrar a seção de horário selecionado com animação
+                selectedSlotContainer.style.display = "flex";
+                selectedSlotContainer.classList.add("visible");
+            }
+
+            // Função para cancelar a seleção
+            cancelSelectionButton.addEventListener("click", () => {
+                // Ocultar a seção de horário selecionado com animação suave
+                selectedSlotContainer.classList.remove("visible");
+
+                setTimeout(() => {
+                    selectedSlotContainer.style.display = "none";
+                }, 400); // Aguarde a transição antes de ocultar totalmente
+            });
+        });
+    </script>
+</body>
+</html>
