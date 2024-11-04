@@ -329,6 +329,51 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
+    const phoneInput = document.querySelector('.phone');
+    // Formatação básica ao digitar, adicionando apenas o código de país +55
+    function basicFormatPhone() {
+        let value = phoneInput.value.replace(/\D/g, ""); // Remove tudo que não for número
+
+        // Adiciona o código de país +55 se não estiver presente
+        if (!value.startsWith("55")) {
+            value = "55" + value;
+        }
+
+        // Limita o número ao tamanho máximo (13 dígitos após o +)
+        value = value.slice(0, 13);
+
+        // Define o valor do input com o formato correto
+        phoneInput.value = "+" + value;
+    }
+
+    // Formatação final ao perder o foco, adicionando o nono dígito se necessário
+    function finalFormatPhone() {
+        let value = phoneInput.value.replace(/\D/g, ""); // Remove tudo que não for número
+
+        // Se o número total (sem o código de país) tiver 10 dígitos, adiciona o nono dígito
+        if (value.length >= 4 && value.length <= 12) {
+            const dddAndNumber = value.slice(2); // Remove o código de país
+            if (dddAndNumber.length === 10 && !dddAndNumber.startsWith("9")) {
+                value = "55" + dddAndNumber.slice(0, 2) + "9" + dddAndNumber.slice(2);
+            }
+        }
+
+        // Limita o número ao formato +559XXXXXXXXX
+        value = value.slice(0, 13);
+
+        // Define o valor do input com o formato correto
+        phoneInput.value = "+" + value;
+    }
+
+    // Evento de formatação básica ao digitar
+    phoneInput.addEventListener("input", basicFormatPhone);
+    // Evento de formatação final ao perder o foco
+    phoneInput.addEventListener("blur", finalFormatPhone);
+    // Evento para garantir formatação correta ao colar
+    phoneInput.addEventListener("paste", (event) => {
+        setTimeout(basicFormatPhone, 0); // Pequeno atraso para pegar o valor colado
+    });
 });
 
 
