@@ -30,7 +30,7 @@ function nextStep() {
         return
     }
 
-    const currentInputs = formSteps[currentStep].querySelectorAll("input[required], select[required]");
+    const currentInputs = formSteps[currentStep].querySelectorAll("input[required], select[required], textarea[required]");
     let valid = true;
 
     currentInputs.forEach(input => {
@@ -281,7 +281,7 @@ function updateReviewContent() {
     reviewContent.innerHTML = ''; // Limpa o conteúdo anterior
 
     // Lista de inputs e seus valores
-    const inputs = document.querySelectorAll('#multi-step-form input, #multi-step-form select');
+    const inputs = document.querySelectorAll('#multi-step-form input, #multi-step-form select, #multi-step-form textarea');
     inputs.forEach(input => {
         let label = '';
         let value = '';
