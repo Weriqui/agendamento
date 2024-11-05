@@ -89,31 +89,10 @@
                 <div class="error-message">Este campo é obrigatório.</div>
             </div>
             <!-- Oitava etapa do formulário -->
-            <div class="form-step">
-                <h3>Quem Fará a Reunião?</h3>
-                <label class="option-card"><input type="radio" name="quem-reuniao" value="decisor" required> Decisor <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
-                <label class="option-card"><input type="radio" name="quem-reuniao" value="influenciador" required> Influenciador <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
-                <label class="option-card"><input type="radio" name="quem-reuniao" value="assessoria-externa" required> Assessoria Externa <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
-                <div class="error-message">Este campo é obrigatório.</div>
-            </div>
-            <!-- Oitava etapa do formulário -->
-            <div class="form-step">
-                <h3>Quem Fará a Reunião?</h3>
-                <label class="option-card"><input type="text" name="nome-quem-reuniao" required placeholder="nome"></label>
-                <label class="option-card"><input class="phone" type="text" name="telefone-quem-reuniao"required placeholder="telefone" maxlength="14"></label>
-                <div class="error-message">Este campo é obrigatório.</div>
-            </div>
-            <!-- Nona etapa do formulário -->
-            <div class="form-step">
-                <h3>Função</h3>
-                <label class="option-card"><input type="radio" name="funcao" value="decisor" required> Decisor <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
-                <label class="option-card"><input type="radio" name="funcao" value="socio" required> Sócio <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
-                <label class="option-card"><input type="radio" name="funcao" value="adv-interno" required> Advogado Interno <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
-                <label class="option-card"><input type="radio" name="funcao" value="adv-externo" required> Advogado Externo <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
-                <label class="option-card"><input type="radio" name="funcao" value="cfo" required> CFO/Responsável Financeiro <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
-                <label class="option-card"><input type="radio" name="funcao" value="contador-interno" required> Contador Interno <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
-                <label class="option-card"><input type="radio" name="funcao" value="contador-externo" required> Contador Externo <span class="checkmark"><i class="fas fa-check-circle"></i></span></label>
-                <div class="error-message">Este campo é obrigatório.</div>
+            <div class="form-step active">
+                <h3>Participantes da Reunião</h3>
+                <div id="participants-list"></div>
+                <button type="button" id="add-participant" class="add-participant-button">Adicionar Participante</button>
             </div>
             <!-- Décima etapa do formulário -->
             <div class="form-step">
@@ -178,8 +157,7 @@
                 <textarea name="observacoes" placeholder="Pontos importantes da agenda" minlength="20" required></textarea>
                 <div class="error-message">Este campo é obrigatório e deve conter pelo menos 20 caracteres.</div>
             </div>
-
-            <!-- Última etapa do formulário: Revisão -->
+            <!-- Décima setima etapa do formulário: Objeção Apresentada -->
             <div class="form-step">
                 <h3>Revisão dos Dados</h3>
                 <div id="review-content">

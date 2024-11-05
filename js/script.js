@@ -165,6 +165,11 @@ function displaySuggestions(items) {
             nomeNegocioInput.value = item.item.title;
             suggestionsContainer.innerHTML = ""; // Limpa as sugestões após selecionar
             nomeNegocioInput.dataset.dealId = item.item.id; // Salva o ID do negócio selecionado
+            const pessoa = item.item.person ? true : false;
+            if (pessoa) {
+                deletar_participante()
+                fetchParticipantInfo(item.item.person.id)
+            }
         });
         suggestionsContainer.appendChild(suggestion);
     });
@@ -376,4 +381,75 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+
+// Função para buscar a pessoa do negócio pelo ID
+function fetchParticipantInfo(Id) {
+    const myHeaders = new Headers();
+    myHeaders.append("Accept", "application/json");
+
+    const requestOptions = {
+        method: "GET",
+        headers: myHeaders,
+        redirect: "follow"
+    };
+
+    fetch(`https://api.pipedrive.com/v1/persons/${Id}?api_token=6c7d502747be67acc199b483803a28a0c9b95c09`, requestOptions)
+        .then(response => response.json())
+        .then(result => {
+            if (result.success) {
+                const data = result.data;
+                const name = data.name || "";
+                const phone = data.phone && data.phone.length > 0 ? data.phone[0].value : "";
+                addParticipant(name, phone, "socio");
+            }
+        })
+        .catch(error => console.error('Erro:', error));
+}
+
+// Função para adicionar um participante
+function addParticipant(name = "", phone = "", defaultRole = "") {
+    const participantsList = document.getElementById("participants-list");
+    const participantDiv = document.createElement("div");
+    participantDiv.classList.add("participant-container");
+    participantDiv.innerHTML = `
+        <div class="participant-item">
+            <label>Nome:</label>
+            <input type="text" name="participant-name" value="${name}" required>
+        </div>
+        <div class="participant-item">
+            <label>Telefone:</label>
+            <input type="text" name="participant-phone" value="${phone}" required>
+        </div>
+        <div class="participant-item">
+            <label>Email:</label>
+            <input type="email" name="participant-email">
+        </div>
+        <div class="participant-item">
+            <label>Função:</label>
+            <select name="participant-role" required>
+                <option value="decisor" ${defaultRole === "decisor" ? "selected" : ""}>Decisor</option>
+                <option value="socio" ${defaultRole === "socio" ? "selected" : ""}>Sócio</option>
+                <option value="adv-interno" ${defaultRole === "adv-interno" ? "selected" : ""}>Advogado Interno</option>
+                <option value="adv-externo" ${defaultRole === "adv-externo" ? "selected" : ""}>Advogado Externo</option>
+                <option value="cfo" ${defaultRole === "cfo" ? "selected" : ""}>CFO/Responsável Financeiro</option>
+                <option value="contador-interno" ${defaultRole === "contador-interno" ? "selected" : ""}>Contador Interno</option>
+                <option value="contador-externo" ${defaultRole === "contador-externo" ? "selected" : ""}>Contador Externo</option>
+            </select>
+        </div>
+    `;
+    participantsList.appendChild(participantDiv);
+}
+
+
+
+// Adiciona um novo participante quando o botão for clicado
+document.getElementById("add-participant").addEventListener("click", function() {
+    addParticipant();
+});
+
+function deletar_participante(){
+    document.querySelectorAll('.participant-container').forEach(element => {
+        element.remove();
+    });
+}
 

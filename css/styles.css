@@ -530,3 +530,42 @@ textarea[name="observacoes"] {
     min-height: 100px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
+/* Estilo para o container de participantes */
+.participant-container {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+.participant-item {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+.participant-item label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+.participant-item input,
+.participant-item select {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+.add-participant-button {
+    background-color: #0288d1;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 20px;
+    width: 100%;
+}
+.add-participant-button:hover {
+    background-color: #0277bd;
+}
